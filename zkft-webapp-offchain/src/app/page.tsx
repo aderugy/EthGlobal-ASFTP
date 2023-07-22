@@ -45,10 +45,12 @@ export default function Home() {
               onResponse={async (response: SismoConnectResponse) => {
                 setSismoConnectResponse(response);
                 setPageState("verifying");
-                const verifiedResult = await fetch("http://localhost:3001/api/v1/verify", {
+                const verifiedResult = await fetch("http://localhost:3001/api/v1/verify/new", {
                   method: "POST",
                   body: JSON.stringify(response),
                 });
+
+                console.log(JSON.stringify(verifiedResult));
                 const data = await verifiedResult.json();
                 if (verifiedResult.ok) {
                   setSismoConnectVerifiedResult(data);

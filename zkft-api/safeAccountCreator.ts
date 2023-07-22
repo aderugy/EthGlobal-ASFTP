@@ -3,10 +3,7 @@ import { SafeFactory } from '@safe-global/protocol-kit'
 import { ethers } from 'ethers'
 import { EthersAdapter } from '@safe-global/protocol-kit'
 
-async function safeWalletCreator(signerPrivateKey:string) {
-    const RPC_URL = 'https://eth-sepolia.g.alchemy.com/v2/demo';
-    const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-    console.log('Provider created!');
+async function safeWalletCreator(provider, signerPrivateKey:string) {
 
     const signer = new ethers.Wallet(signerPrivateKey, provider);
     console.log('Wallet created!');
@@ -31,17 +28,8 @@ async function safeWalletCreator(signerPrivateKey:string) {
     console.log('Your Safe has been deployed:')
     console.log(`https://goerli.etherscan.io/address/${safeAddress}`)
     console.log(`https://app.safe.global/gor:${safeAddress}`)
+
+    return safeAddress;
 }
 
-
-// Call start
-(async() => {
-    try {
-        console.log('Creating wallet...');
-        await safeWalletCreator('49e6ec70c0aac905f66cc0b1da815018f7f183e97194022e0c31d1a640c48235');
-        console.log('Done.');
-    }
-    catch (err) {
-        console.log(err);
-    }
-  })();
+module.exports = { safeWalletCreator };

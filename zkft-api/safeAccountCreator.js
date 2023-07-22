@@ -39,17 +39,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var protocol_kit_1 = require("@safe-global/protocol-kit");
 var ethers_1 = require("ethers");
 var protocol_kit_2 = require("@safe-global/protocol-kit");
-require('dotenv').config();
-function safeWalletCreator(signerPrivateKey) {
+function safeWalletCreator(provider, signerPrivateKey) {
     return __awaiter(this, void 0, void 0, function () {
-        var RPC_URL, provider, signer, safeAccountConfig, ethAdapterOwner1, safeFactory, safeSdkOwner1, safeAddress;
+        var signer, safeAccountConfig, ethAdapterOwner1, safeFactory, safeSdkOwner1, safeAddress;
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    RPC_URL = 'https://eth-sepolia.g.alchemy.com/v2/demo';
-                    provider = new ethers_1.ethers.providers.JsonRpcProvider(RPC_URL);
-                    console.log('Provider created!');
                     signer = new ethers_1.ethers.Wallet(signerPrivateKey, provider);
                     console.log('Wallet created!');
                     console.log("Address: ".concat(signer.address));
@@ -68,7 +64,7 @@ function safeWalletCreator(signerPrivateKey) {
                     return [4 /*yield*/, protocol_kit_1.SafeFactory.create({ ethAdapter: ethAdapterOwner1 })];
                 case 2:
                     safeFactory = _b.sent();
-                    return [4 /*yield*/, safeFactory.deploySafe({ safeAccountConfig: safeAccountConfig })];
+                    return [4 /*yield*/, safeFactory.deploySafe({ safeAccountConfig: safeAccountConfig, saltNonce: "".concat(Math.floor(Math.random() * 1000000000)) })];
                 case 3:
                     safeSdkOwner1 = _b.sent();
                     return [4 /*yield*/, safeSdkOwner1.getAddress()];
@@ -77,46 +73,9 @@ function safeWalletCreator(signerPrivateKey) {
                     console.log('Your Safe has been deployed:');
                     console.log("https://goerli.etherscan.io/address/".concat(safeAddress));
                     console.log("https://app.safe.global/gor:".concat(safeAddress));
-                    return [2 /*return*/];
+                    return [2 /*return*/, safeAddress];
             }
         });
     });
 }
-// Call start
-(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var i, err_1, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 7, , 8]);
-                console.log('Creating wallet...');
-                console.log('Private key: ' + process.env.PRIVATE_KEY);
-                i = 0;
-                _a.label = 1;
-            case 1:
-                if (!(i < 3)) return [3 /*break*/, 6];
-                _a.label = 2;
-            case 2:
-                _a.trys.push([2, 4, , 5]);
-                return [4 /*yield*/, safeWalletCreator(process.env.PRIVATE_KEY)];
-            case 3:
-                _a.sent();
-                return [3 /*break*/, 5];
-            case 4:
-                err_1 = _a.sent();
-                console.log('error ' + i.toString());
-                return [3 /*break*/, 5];
-            case 5:
-                i++;
-                return [3 /*break*/, 1];
-            case 6:
-                console.log('Done.');
-                return [3 /*break*/, 8];
-            case 7:
-                err_2 = _a.sent();
-                console.log(err_2);
-                return [3 /*break*/, 8];
-            case 8: return [2 /*return*/];
-        }
-    });
-}); })();
+module.exports = { safeWalletCreator: safeWalletCreator };
