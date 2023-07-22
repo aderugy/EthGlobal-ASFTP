@@ -34,7 +34,7 @@ const Header: React.FC = () => {
           {" "}
           Notes: <br />
           1. You should exactly the same Configuration (AppId and impersonation), AuthRequests and ClaimsRequests in the frontend and in your contract <br />
-          2. If you are using metamask and transactions hang. Go to settings > advanced > clear activity and nonce data <br />
+          2. If you are using metamask and transactions hang. Go to settings, advanced, clear activity and nonce data <br />
           3. First ZK Proof generation takes longer time, especially with bad internet as there is a
           zkey file to download once in the data vault connection <br />
           4. The more proofs you request, the longer it takes to generate them (about 2 secs per
