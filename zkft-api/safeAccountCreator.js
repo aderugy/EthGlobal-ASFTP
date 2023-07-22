@@ -39,16 +39,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var protocol_kit_1 = require("@safe-global/protocol-kit");
 var ethers_1 = require("ethers");
 var protocol_kit_2 = require("@safe-global/protocol-kit");
-function safeWalletCreator(provider, signerPrivateKey) {
+function safeWalletCreator(signer) {
     return __awaiter(this, void 0, void 0, function () {
-        var signer, safeAccountConfig, ethAdapterOwner1, safeFactory, safeSdkOwner1, safeAddress;
+        var safeAccountConfig, ethAdapterOwner1, safeFactory, safeSdkOwner1, safeAddress;
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    signer = new ethers_1.ethers.Wallet(signerPrivateKey, provider);
-                    console.log('Wallet created!');
-                    console.log("Address: ".concat(signer.address));
+                    console.log('Creating the safe.');
+                    console.log('Signing using wallet: ' + signer.address);
                     _a = {};
                     return [4 /*yield*/, signer.getAddress()];
                 case 1:
@@ -57,22 +56,32 @@ function safeWalletCreator(provider, signerPrivateKey) {
                     ],
                         _a.threshold = 1,
                         _a);
+                    console.log('Safe account configuration created.');
                     ethAdapterOwner1 = new protocol_kit_2.EthersAdapter({
                         ethers: ethers_1.ethers,
                         signerOrProvider: signer
                     });
+                    console.log('EthersAdapter created.');
+                    console.log('Creating Safe (using SafeFactory)');
                     return [4 /*yield*/, protocol_kit_1.SafeFactory.create({ ethAdapter: ethAdapterOwner1 })];
                 case 2:
                     safeFactory = _b.sent();
+                    console.log('Done.');
+                    console.log('Deploying Safe.');
                     return [4 /*yield*/, safeFactory.deploySafe({ safeAccountConfig: safeAccountConfig, saltNonce: "".concat(Math.floor(Math.random() * 1000000000)) })];
                 case 3:
                     safeSdkOwner1 = _b.sent();
+                    console.log('Done.');
+                    console.log('Retrieving safe address.');
                     return [4 /*yield*/, safeSdkOwner1.getAddress()];
                 case 4:
                     safeAddress = _b.sent();
+                    console.log('Done.');
+                    console.log();
                     console.log('Your Safe has been deployed:');
                     console.log("https://goerli.etherscan.io/address/".concat(safeAddress));
                     console.log("https://app.safe.global/gor:".concat(safeAddress));
+                    console.log();
                     return [2 /*return*/, safeAddress];
             }
         });

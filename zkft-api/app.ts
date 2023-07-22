@@ -7,7 +7,6 @@ const ethers = require('ethers');
 import {AuthType, SismoConnect, SismoConnectVerifiedResult} from "@sismo-core/sismo-connect-server";
 import {AUTHS, CLAIMS, CONFIG, SIGNATURE_REQUEST} from "./sismo-connect-config.js";
 
-const userSafes = [];
 const sismoConnect = SismoConnect({ config: CONFIG });
 
 require('dotenv').config();
@@ -32,10 +31,11 @@ console.log('Provider initialized!\n');
 
 
 console.log('Creating API Wallet...');
-console.log(process.env.PRIVATE_KEY)
 const apiWallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 console.log('Api Wallet Public Address: ' + apiWallet.address);
 console.log();
+
+const database = [];
 
 async function sendXDai(to: string, amount: string) {
     try {
@@ -64,18 +64,16 @@ async function sendXDai(to: string, amount: string) {
     }
 }
 
-function addSafe(vaultId, wallet, safePublicAddress) {
+function addSafe(vaultId, safePublicAddress) {
     console.log('Adding safe !')
     console.log('VaultID: ' + vaultId);
-    console.log('Private signing key: ' + wallet);
     console.log('Safe public address: ' + safePublicAddress);
 
-    if (userSafes.map(user => user.vaultId).includes(vaultId))
+    if (database.map(user => user.vaultId).includes(vaultId))
         throw new Error(`User with vault ID '${vaultId}' already has a registered safe.`);
 
-    userSafes.push({
+    database.push({
         vaultId: vaultId,
-        wallet: wallet,
         publicAddress: safePublicAddress
     });
 }
@@ -108,15 +106,23 @@ app.post('/api/v1/verify/new', async (req, res) => {
             const vaultId = result.getUserId(AuthType.VAULT);
             console.log('Retrieved vault ID: ' + vaultId);
 
-            // Creating the wallet that will deploy the Safe account
-            const safeAccountDeployerWallet = ethers.Wallet.createRandom();
-            await sendXDai(safeAccountDeployerWallet.address, '0.01');
-
             const safeAccountCreator = require('./safeAccountCreator.js');
-            const safePublicAddress = await safeAccountCreator.safeWalletCreator(provider, safeAccountDeployerWallet.privateKey);
+            const safePublicAddress = await safeAccountCreator.safeWalletCreator(apiWallet);
 
-            addSafe(vaultId, safeAccountDeployerWallet, safePublicAddress);
+            console.log(`Attempting to send deposited money to the Safe (${safePublicAddress})`)
+            await sendXDai(safePublicAddress, '0.01');
+            console.log('Done.');
+            console.log();
 
+            console.log('Adding save to the database.')
+            addSafe(vaultId, safePublicAddress);
+            console.log('Done.');
+
+            console.log();
+            console.log('Safe successfully deployed!');
+            console.log();
+
+            result['safePublicAddress'] = safePublicAddress;
             return res.status(200).json(result);
         });
     }

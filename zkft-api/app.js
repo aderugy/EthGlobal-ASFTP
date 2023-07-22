@@ -42,7 +42,6 @@ var body_parser = require('body-parser');
 var ethers = require('ethers');
 var sismo_connect_server_1 = require("@sismo-core/sismo-connect-server");
 var sismo_connect_config_js_1 = require("./sismo-connect-config.js");
-var userSafes = [];
 var sismoConnect = (0, sismo_connect_server_1.SismoConnect)({ config: sismo_connect_config_js_1.CONFIG });
 require('dotenv').config();
 var app = express();
@@ -60,10 +59,10 @@ console.log('Initialising Ether.js JsonRpcProvider...');
 var provider = new ethers.providers.JsonRpcProvider(providerUrl);
 console.log('Provider initialized!\n');
 console.log('Creating API Wallet...');
-console.log(process.env.PRIVATE_KEY);
 var apiWallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 console.log('Api Wallet Public Address: ' + apiWallet.address);
 console.log();
+var database = [];
 function sendXDai(to, amount) {
     return __awaiter(this, void 0, void 0, function () {
         var amountInXDai, transaction, tx, txReceipt, balance, error_1;
@@ -100,16 +99,14 @@ function sendXDai(to, amount) {
         });
     });
 }
-function addSafe(vaultId, wallet, safePublicAddress) {
+function addSafe(vaultId, safePublicAddress) {
     console.log('Adding safe !');
     console.log('VaultID: ' + vaultId);
-    console.log('Private signing key: ' + wallet);
     console.log('Safe public address: ' + safePublicAddress);
-    if (userSafes.map(function (user) { return user.vaultId; }).includes(vaultId))
+    if (database.map(function (user) { return user.vaultId; }).includes(vaultId))
         throw new Error("User with vault ID '".concat(vaultId, "' already has a registered safe."));
-    userSafes.push({
+    database.push({
         vaultId: vaultId,
-        wallet: wallet,
         publicAddress: safePublicAddress
     });
 }
@@ -123,7 +120,7 @@ app.post('/api/v1/verify/new', function (req, res) { return __awaiter(void 0, vo
                 data_1 += chunk;
             });
             req.on('end', function () { return __awaiter(void 0, void 0, void 0, function () {
-                var result, vaultId, safeAccountDeployerWallet, safeAccountCreator, safePublicAddress;
+                var result, vaultId, safeAccountCreator, safePublicAddress;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -139,15 +136,20 @@ app.post('/api/v1/verify/new', function (req, res) { return __awaiter(void 0, vo
                             console.log('ZKP verified successfully.');
                             vaultId = result.getUserId(sismo_connect_server_1.AuthType.VAULT);
                             console.log('Retrieved vault ID: ' + vaultId);
-                            safeAccountDeployerWallet = ethers.Wallet.createRandom();
-                            return [4 /*yield*/, sendXDai(safeAccountDeployerWallet.address, '0.01')];
-                        case 2:
-                            _a.sent();
                             safeAccountCreator = require('./safeAccountCreator.js');
-                            return [4 /*yield*/, safeAccountCreator.safeWalletCreator(provider, safeAccountDeployerWallet.privateKey)];
-                        case 3:
+                            return [4 /*yield*/, safeAccountCreator.safeWalletCreator(apiWallet)];
+                        case 2:
                             safePublicAddress = _a.sent();
-                            addSafe(vaultId, safeAccountDeployerWallet, safePublicAddress);
+                            console.log("Attempting to send deposited money to the Safe (".concat(safePublicAddress, ")"));
+                            return [4 /*yield*/, sendXDai(safePublicAddress, '0.01')];
+                        case 3:
+                            _a.sent();
+                            console.log('Done.');
+                            console.log();
+                            console.log('Adding save to the database.');
+                            addSafe(vaultId, safePublicAddress);
+                            console.log('Done.');
+                            result['safePublicAddress'] = safePublicAddress;
                             return [2 /*return*/, res.status(200).json(result)];
                     }
                 });
