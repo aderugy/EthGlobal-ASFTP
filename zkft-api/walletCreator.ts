@@ -42,7 +42,7 @@ async function safeWalletCreator(signerPrivateKey:string) {
 (async() => {
     console.log('before start');
 
-    await safeWalletCreator("3c6b2f8547987dd5568b806287db0f7ce56047fd9b48c2af6438e003731d617d");
+    await safeWalletCreator(process.env.PRIVATE_KEY);
 
     console.log('after start');
   })();
