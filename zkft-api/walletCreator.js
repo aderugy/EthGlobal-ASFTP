@@ -37,23 +37,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var protocol_kit_1 = require("@safe-global/protocol-kit");
-var api_kit_1 = require("@safe-global/api-kit");
 var ethers_1 = require("ethers");
 var protocol_kit_2 = require("@safe-global/protocol-kit");
 require('dotenv').config();
 function safeWalletCreator(signerPrivateKey) {
     return __awaiter(this, void 0, void 0, function () {
-        var RPC_URL, provider, owner1Signer, safeAccountConfig, ethAdapterOwner1, txServiceUrl, safeService, safeFactory, safeSdkOwner1, safeAddress;
+        var RPC_URL, provider, signer, safeAccountConfig, ethAdapterOwner1, safeFactory, safeSdkOwner1, safeAddress;
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    RPC_URL = 'https://polygon-mumbai-bor.publicnode.com/';
+                    RPC_URL = 'https://eth-sepolia.g.alchemy.com/v2/demo';
                     provider = new ethers_1.ethers.providers.JsonRpcProvider(RPC_URL);
-                    owner1Signer = new ethers_1.ethers.Wallet(signerPrivateKey, provider) //need private key, not public
-                    ;
+                    console.log('Provider created!');
+                    signer = new ethers_1.ethers.Wallet(signerPrivateKey, provider);
+                    console.log('Wallet created!');
+                    console.log("Address: ".concat(signer.address));
                     _a = {};
-                    return [4 /*yield*/, owner1Signer.getAddress()];
+                    return [4 /*yield*/, signer.getAddress()];
                 case 1:
                     safeAccountConfig = (_a.owners = [
                         _b.sent()
@@ -62,10 +63,8 @@ function safeWalletCreator(signerPrivateKey) {
                         _a);
                     ethAdapterOwner1 = new protocol_kit_2.EthersAdapter({
                         ethers: ethers_1.ethers,
-                        signerOrProvider: owner1Signer
+                        signerOrProvider: signer
                     });
-                    txServiceUrl = 'https://safe-transaction-goerli.safe.global';
-                    safeService = new api_kit_1.default({ txServiceUrl: txServiceUrl, ethAdapter: ethAdapterOwner1 });
                     return [4 /*yield*/, protocol_kit_1.SafeFactory.create({ ethAdapter: ethAdapterOwner1 })];
                 case 2:
                     safeFactory = _b.sent();
@@ -85,15 +84,39 @@ function safeWalletCreator(signerPrivateKey) {
 }
 // Call start
 (function () { return __awaiter(void 0, void 0, void 0, function () {
+    var i, err_1, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log('before start');
-                return [4 /*yield*/, safeWalletCreator(process.env.PRIVATE_KEY)];
+                _a.trys.push([0, 7, , 8]);
+                console.log('Creating wallet...');
+                console.log('Private key: ' + process.env.PRIVATE_KEY);
+                i = 0;
+                _a.label = 1;
             case 1:
+                if (!(i < 3)) return [3 /*break*/, 6];
+                _a.label = 2;
+            case 2:
+                _a.trys.push([2, 4, , 5]);
+                return [4 /*yield*/, safeWalletCreator(process.env.PRIVATE_KEY)];
+            case 3:
                 _a.sent();
-                console.log('after start');
-                return [2 /*return*/];
+                return [3 /*break*/, 5];
+            case 4:
+                err_1 = _a.sent();
+                console.log('error ' + i.toString());
+                return [3 /*break*/, 5];
+            case 5:
+                i++;
+                return [3 /*break*/, 1];
+            case 6:
+                console.log('Done.');
+                return [3 /*break*/, 8];
+            case 7:
+                err_2 = _a.sent();
+                console.log(err_2);
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
         }
     });
 }); })();

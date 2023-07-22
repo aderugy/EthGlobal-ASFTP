@@ -400,7 +400,7 @@
 
 "@safe-global/api-kit@^1.3.0":
   version "1.3.0"
-  resolved "https://registry.npmjs.org/@safe-global/api-kit/-/api-kit-1.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/@safe-global/api-kit/-/api-kit-1.3.0.tgz#3606aa52a3d5d0d46817fafc38572be7be1eaf31"
   integrity sha512-3fdvoBtgufzmqmoBHir7vbS5N2t9Yc4kTeIJmAgmAGl8rHAy3z1bSv5uoEHYSMow34q1Am1aUar6vVAwwkIXhg==
   dependencies:
     "@ethersproject/abstract-signer" "^5.7.0"
@@ -409,7 +409,7 @@
 
 "@safe-global/protocol-kit@^1.2.0":
   version "1.2.0"
-  resolved "https://registry.npmjs.org/@safe-global/protocol-kit/-/protocol-kit-1.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/@safe-global/protocol-kit/-/protocol-kit-1.2.0.tgz#5501fa0e2a1b4ad03cd5a4ee12bb9e799e1dd5a7"
   integrity sha512-drU2uK30AZ4tqI/9ER7PGMD/lZp/5B9T02t+noTk7WF9Xb7HxskJd8GNU01KE55oyH31Y0AfXaE68H/f9lYa4A==
   dependencies:
     "@ethersproject/address" "^5.7.0"
@@ -424,7 +424,7 @@
 
 "@safe-global/safe-core-sdk-types@^2.2.0":
   version "2.2.0"
-  resolved "https://registry.npmjs.org/@safe-global/safe-core-sdk-types/-/safe-core-sdk-types-2.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/@safe-global/safe-core-sdk-types/-/safe-core-sdk-types-2.2.0.tgz#2e34a5089035719e9a92a0bc6aa181c2edb0f108"
   integrity sha512-vVG9qQnUYx+Xwsbuqraq25MPJX1I1aV1P81ZnHZa1lEMU7stqYWAmykUm/mvqsm8+AsvEB/wBKlFjbFJ/duzoA==
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
@@ -1172,7 +1172,7 @@ dom-walk@^0.1.0:
 
 dotenv@^16.3.1:
   version "16.3.1"
-  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.3.1.tgz"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.3.1.tgz#369034de7d7e5b120972693352a3bf112172cc3e"
   integrity sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==
 
 ecc-jsbn@~0.1.1:
