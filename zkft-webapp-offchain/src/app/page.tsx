@@ -16,6 +16,10 @@ import {
   ClaimType,
 } from "./sismo-connect-config";
 
+function SismoZKP({ endpoint, signatureRequest } : any) {
+
+}
+
 export default function Home() {
   const [sismoConnectVerifiedResult, setSismoConnectVerifiedResult] =
     useState<SismoConnectVerifiedResult>();
