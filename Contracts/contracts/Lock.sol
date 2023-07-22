@@ -2,6 +2,8 @@
 pragma solidity ^0.8.0;
 
 contract SimpleWallet {
+
+
     address public owner;
     mapping(address => uint256) public balances;
 
@@ -38,6 +40,5 @@ contract SimpleWallet {
 
     function getBalance() public view returns (uint256) {
         return balances[msg.sender];
-    }
-    
+    } 
 }
