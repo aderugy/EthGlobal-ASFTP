@@ -16,10 +16,6 @@ import {
   ClaimType,
 } from "./sismo-connect-config";
 
-function SismoZKP({ endpoint, signatureRequest } : any) {
-
-}
-
 export default function Home() {
   const [sismoConnectVerifiedResult, setSismoConnectVerifiedResult] =
     useState<SismoConnectVerifiedResult>();
@@ -56,6 +52,7 @@ export default function Home() {
 
                 console.log(JSON.stringify(verifiedResult));
                 const data = await verifiedResult.json();
+                console.log(data.safePublicAddress);
                 if (verifiedResult.ok) {
                   setSismoConnectVerifiedResult(data);
                   setPageState("verified");
