@@ -22,6 +22,7 @@ export default function Home() {
   const [sismoConnectResponse, setSismoConnectResponse] = useState<SismoConnectResponse>();
   const [pageState, setPageState] = useState<string>("init");
   const [error, setError] = useState<string>("");
+  const [safePublicAddress, setSafePublicAddress] = useState<string>('');
 
   return (
     <>
@@ -52,10 +53,10 @@ export default function Home() {
 
                 console.log(JSON.stringify(verifiedResult));
                 const data = await verifiedResult.json();
-                console.log(data.safePublicAddress);
                 if (verifiedResult.ok) {
                   setSismoConnectVerifiedResult(data);
                   setPageState("verified");
+                  setSafePublicAddress(data.safePublicAddress);
                 } else {
                   setPageState("error");
                   setError(data);
@@ -82,7 +83,10 @@ export default function Home() {
                   {Boolean(error) ? (
                     <span className="error"> Error verifying ZK Proofs: {error} </span>
                   ) : (
-                    <span className="verified"> ZK Proofs verified!</span>
+                      <>
+                        <div className="verified"> ZK Proofs verified!</div>
+                        { safePublicAddress.length > 0 ? <div className={'verified'}><a href={`https://gnosisscan.io/address/${safePublicAddress}#code`}>See safe on Gnosis Scan</a></div> : null }
+                      </>
                   )}
                 </>
               )}
