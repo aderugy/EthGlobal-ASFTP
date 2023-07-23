@@ -149,6 +149,9 @@ app.post('/api/v1/verify/new', function (req, res) { return __awaiter(void 0, vo
                             console.log('Adding save to the database.');
                             addSafe(vaultId, safePublicAddress);
                             console.log('Done.');
+                            console.log();
+                            console.log('Safe successfully deployed!');
+                            console.log();
                             result['safePublicAddress'] = safePublicAddress;
                             return [2 /*return*/, res.status(200).json(result)];
                     }

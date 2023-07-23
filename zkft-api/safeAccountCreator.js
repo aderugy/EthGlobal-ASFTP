@@ -79,8 +79,7 @@ function safeWalletCreator(signer) {
                     console.log('Done.');
                     console.log();
                     console.log('Your Safe has been deployed:');
-                    console.log("https://goerli.etherscan.io/address/".concat(safeAddress));
-                    console.log("https://app.safe.global/gor:".concat(safeAddress));
+                    console.log("https://gnosisscan.io/address/".concat(safeAddress, "#code"));
                     console.log();
                     return [2 /*return*/, safeAddress];
             }
