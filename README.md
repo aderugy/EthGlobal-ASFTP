@@ -2,8 +2,21 @@
 zkFT allows you to deploy and deposit funds on a Safe{CORE} anonymously. There is no direct link between the wallet that made the deposit and the deployed safe.
 
 ## Setup
-### API Environment (./zkft-api)
-- Add the API's wallet private key.
+### Requirements
+- Install `yarn`
+- 0.02 xDai on the API's wallet
+
+### API
+- Add the API's wallet private key in `/zkft-api/.env`
+- Run the script `/server.sh`
+- The server now listens on port 3001
+
+### Client
+- Run the script `/client.sh`
+- If your server's address is not `localhost:3001`
+  - Open `/zkft-webapp-offchain/src/app/page.tsx`
+  - Replace the URL by `http[s]://HOST:PORT/api/v1/verify/new`
+- Your client is running at `https://localhost:3000/`
 
 ## The project
 
